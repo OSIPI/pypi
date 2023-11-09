@@ -6,6 +6,7 @@ General
    :maxdepth: 2
 
    general.averaging
+   general.convolution
    general.deconvolution
    general.descriptive
    general.forward

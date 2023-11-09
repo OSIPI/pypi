@@ -1,5 +1,5 @@
-Descriptive
-===========
+Convolution
+^^^^^^^^^^^
 
 .. currentmodule:: osipi
 
@@ -11,5 +11,4 @@ Descriptive
 
     See :ref:`developer-guide` for guidance on how to contribute.
 
-   
-   
+

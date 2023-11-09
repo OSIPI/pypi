@@ -1,13 +1,10 @@
 
 
-.. _sphx_glr_generated_examples_tissue:
-
-*********************
-Tissue concentrations
-*********************
+Examples using ``osipi.tofts``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-
+.. start-sphx-glr-thumbnails
 
 
 .. raw:: html
@@ -32,13 +29,11 @@ Tissue concentrations
     </div>
 
 
+.. only:: not html
+
+ * :ref:`sphx_glr_generated_examples_tissue_plot_tofts.py`
+
 .. raw:: html
 
     </div>
-
-
-.. toctree::
-   :hidden:
-
-   /generated/examples/tissue/plot_tofts
 

@@ -36,7 +36,7 @@ If you want to edit the documentation of a specific function, then you need to f
 How to contribute tests
 ***********************
 
-Beyond documentation and functionality, solid testing is equally critical for ensuring long-term stability of a package. `osipi` uses a continuous integration model where all tests are run before each push to the central respository. This is important because often changes at one part of the code, even if tested well locally, can have unintended consequences at other parts. The testing prevents that these errors propagate and destablize parts of the package. 
+Beyond documentation and functionality, solid testing is equally critical for ensuring long-term stability of a package. `osipi` uses a continuous integration model where all tests are run before each push to the central repository. This is important because often changes at one part of the code, even if tested well locally, can have unintended consequences at other parts. The testing prevents that these errors propagate and destablize parts of the package.
 
 If you find a bug in any part of the code, this obviously points to a flaw in the code, but it also reveals a gap in the testing. It is critical when this happens that both the code AND the tests are reviewed to ensure that in future a scenario of this type is picked up during testing. 
 
@@ -47,7 +47,7 @@ The tests are defined in the folder `osipi-tests`.
 How to contribute functionality
 *******************************
 
-OSIPI is always happy to recieve new functionality for inclusion in the `osipi` package. This can be code that addresses a gap in the current functionality, or it can be code that improves the performance of a current implementation. Improvements can consist of extending the functionality (e.g. with new optional arguments), user friendliness or consistency, improvement of the accuracy or precision in the results, computation time, or platform independence, or improved documentation or code structure. 
+OSIPI is always happy to receive new functionality for inclusion in the `osipi` package. This can be code that addresses a gap in the current functionality, or it can be code that improves the performance of a current implementation. Improvements can consist of extending the functionality (e.g. with new optional arguments), user friendliness or consistency, improvement of the accuracy or precision in the results, computation time, or platform independence, or improved documentation or code structure.
 
 Contribution of functionality generally proceeds in two steps. In the first step you submit your code to the primary *contributions* repository as explained in its `wiki <https://github.com/OSIPI/DCE-DSC-MRI_CodeCollection/wiki/How-to-contribute-code>`_. The task force will catalogue your code in the contributions repository and test it as explained in the `guidance <https://github.com/OSIPI/DCE-DSC-MRI_CodeCollection/wiki/The-testing-approach>`_. Afterwards, if it is found to address a gap in `osipi` and/or improve existing functionality, you will be invited to submit a pull request to `osipi` containing your contribution formatted as required by the package. 
 

@@ -101,7 +101,7 @@ remove_from_toctrees = ["_autosummary/*"]
 html_theme = 'pydata_sphinx_theme'
 
 html_theme_options = {
-    "github_url": "https://osipi.github.io/pypi",
+    "github_url": "https://github.com/OSIPI/pypi",
     "collapse_navigation": True,
     }
 

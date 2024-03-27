@@ -103,7 +103,15 @@ html_theme = 'pydata_sphinx_theme'
 html_theme_options = {
     "github_url": "https://osipi.github.io/pypi",
     "collapse_navigation": True,
-    }
+    "use_edit_page_button": True,
+}
+html_context = {
+    "github_url": "https://github.com",
+    "github_user": "OSIPI", 
+    "github_repo": "pypi", 
+    "github_version":"dev",
+    "doc_path": "docs/source",
+}
 
 # Add any paths that contain custom static files (such as style sheets) here, relative to this directory. They are copied after the builtin static files, so a file named "default.css" will overwrite the builtin "default.css"
 html_static_path = ['_static']

@@ -1,2 +1,4 @@
 .idea/
 /.venv
+/src/osipi.egg-info
+dist

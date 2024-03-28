@@ -28,6 +28,7 @@ def distribute():
     """
     create_venv()
     install()
+    install_test()
 
     os.system(activate() + ' && ' + 'pip install --upgrade build')
     os.system(activate() + ' && ' + 'python -m build')
@@ -59,6 +60,11 @@ def install():
 
     logging.info("Installing requirements...")
     os.system(activate() + ' && ' + 'py -m pip install -r requirements.txt')
+
+def install_test():
+  """Installs test requirements from the test directory"""
+  logging.info("Installing test requirements...")
+  os.system(activate() + ' && ' + 'py -m pip install -r tests/requirements.txt')
 
 
 if __name__ == '__main__':

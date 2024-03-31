@@ -1,2 +1,5 @@
 .idea/
 /.venv
+/src/osipi.egg-info
+dist
+tests/__pycache__/

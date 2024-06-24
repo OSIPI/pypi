@@ -3,10 +3,20 @@ Concentration
 
 .. currentmodule:: osipi
 
-.. note::
+Signal to Concentration
+-----------------------
 
-    This is a placeholder page. There is no relevant functionality in ``osipi`` yet.
+.. autosummary::
+   :toctree: ../generated/api/
+   :template: autosummary.rst
 
-    Please check back later - or better yet, write up what you were looking for here and contribute it! This way the next person looking for this feature won't have to..
+   S_to_C_via_R1_SPGR
 
-    See :ref:`developer-guide` for guidance on how to contribute.
+R1 to Concentration
+-------------------
+
+.. autosummary::
+   :toctree: ../generated/api/
+   :template: autosummary.rst
+
+   R1_to_C_linear_relaxivity

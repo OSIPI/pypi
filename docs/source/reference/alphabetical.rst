@@ -10,8 +10,10 @@ Alphabetic list of all currently available `osipi` code snippets.
    :toctree: ../generated/api/
    :template: autosummary.rst
 
-   aif_parker
    aif_georgiou
+   aif_parker
    aif_weinmann
-   tofts
    extended_tofts
+   signal_linear
+   signal_SPGR
+   tofts

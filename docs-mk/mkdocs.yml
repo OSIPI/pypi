@@ -27,7 +27,7 @@ theme:
   language: en
   palette:
     - scheme: default
-      primary: teal
+      primary: deep-purple
       accent: purple
       toggle:
         icon: material/toggle-switch
@@ -36,7 +36,7 @@ theme:
       toggle:
         icon: material/toggle-switch
         name: Switch to dark mode
-      primary: teal
+      primary: purple
       accent: lime
 
 plugins:
@@ -57,12 +57,24 @@ nav:
       - Simulating data:
           - Overview: user-guide/simulate.md
           - Simulate: user-guide/gen_aif.md
+      - DRO:
+          - Overview: user-guide/dro.md
+          - DRO: user-guide/synthetic.md
 
   - About: about/index.md
   - Developer Guide: contribution/index.md
   - References:
       - references/index.md
-      - Index:
+      - Dro:
+          - references/dro/index.md
+          - DRO functions:
+              - read_mri_from_dicoms: references/dro/dro_read_mri.md
+              - signal_enhancement: references/dro/signal_enhance.md
+              - Fitting:
+                  - Modified Tofts: references/dro/fit_models/modified_tofts.md
+                  - Extended Tofts: references/dro/fit_models/extended_tofts.md
+                  - Forward Tofts: references/dro/fit_models/forward_modified_tofts.md
+      - Models:
           - references/models/index.md
           - AIF models:
               - references/models/aif_models/index.md

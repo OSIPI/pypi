@@ -6,11 +6,20 @@ import pydicom
 from osipi.DRO.filters_and_noise import median_filter
 
 
-def read_dicom_slices_as_4d_signal(folder_path):
+def read_dicom_slices_as_4d_signal(folder_path: str) -> (np.ndarray, dict, np.ndarray):
+    """Read DICOM files from a folder and return the 4D signal data.
+
+    Args:
+        folder_path (str): Path to the folder containing DICOM files.
+
+    Returns:
+        signal: The 4D signal data (x, y, z, t).
+        slices: Dictionary containing the slices.
+        example_data: The first slice.
+
+
     """
-    Read a DICOM series from a folder path.
-    Returns the signal data as a 4D numpy array (x, y, z, t).
-    """
+
     slices = {}
     for root, _, files in os.walk(folder_path):
         for file in files:
@@ -40,8 +49,22 @@ def read_dicom_slices_as_4d_signal(folder_path):
     return signal, slices, slices[slice_location][0][1]
 
 
-def SignalEnhancementExtract(S, datashape, baselinepoints):
-    # Take baseline average
+def SignalEnhancementExtract(
+    S: np.ndarray, datashape: list, baselinepoints: int = 5
+) -> (np.ndarray, np.ndarray, np.ndarray):
+    """Signal enhancement extraction from 4D signal data.
+
+    Args:
+        S: is the 4D signal data (x, y, z, t).
+        datashape: is the shape of the data (x, y, z, t).
+        baselinepoints: is the number of time points before contrast injection.
+
+    Returns:
+        E: The signal enhancement.
+        S0: The baseline signal (S0).
+        S: The 4D signal data (x, y, z, t).
+
+    """
     S0 = np.average(S[:, :, :, 0:baselinepoints], axis=3)  # Take baseline signal
     E = np.zeros_like(S)
 

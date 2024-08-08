@@ -7,7 +7,40 @@ from scipy.optimize import curve_fit
 import osipi
 
 
-def modifiedToftsMurase(Cp, Ctiss, dt, datashape):
+def modifiedToftsMurase(
+    Cp: np.ndarray, Ctiss: np.ndarray, dt: int, datashape: tuple
+) -> (np.ndarray, np.ndarray, np.ndarray):
+    """Fit the Modified Tofts model to the data
+
+    This function uses a linear solver (np.linalg.lstsq)
+    to fit the parameters of the Modified Tofts model.
+    The linear solver is used to solve the equation C = AB for B,
+     where C is the tissue concentration,
+    A is a matrix that depends on the arterial input function and the tissue concentration,
+     and B is the array of parameters.
+
+
+    Args:
+        Cp: is the arterial input function [OSIPI CAPLEX Q.IC1.001]
+        Ctiss: is the tissue concentration [OSIPI CAPLEX Q.IC1.001] as 4d array (x, y, z, t)
+        dt: is the time interval between samples
+        datashape: is the shape of the data array (x, y, z, t)
+
+    Returns:
+        K1: is the rate constant of the forward model (Ktrans) [OSIPI CAPLEX Q.PH1.008]
+        k2: is the rate constant of the reverse model [OSIPI CAPLEX Q.PH1.009]
+        Vp: is the plasma volume fraction [OSIPI CAPLEX Q.PH1.001]
+
+    See Also:
+        `Exteded Tofts Model`
+        `Tofts Model`
+
+    References:
+        - Lexicon url:
+            https://osipi.github.io/OSIPI_CAPLEX/perfusionModels/#indicator-concentration-models
+        - Lexicon code: M.PH1.001
+        - OSIPI name: Modified Tofts Model
+    """
     # Fit Modified Tofts (Linear from Murase, 2004)
     # Cp = Ea/0.45, Ctis=E/0.45
     # Matrix equation C=AB (same notation as Murase)
@@ -120,7 +153,43 @@ def process_voxel(j, i, k, c_tiss, ca, t, type="ET"):
     return j, i, k, popt
 
 
-def extended_tofts_model(ca, c_tiss, t):
+def extended_tofts_model(
+    ca: np.ndarray, c_tiss: np.ndarray, t: np.ndarray
+) -> (np.ndarray, np.ndarray, np.ndarray):
+    """
+    Fit the Extended Tofts model to the data
+
+    The function uses a curve fit from SciPy to fit the parameters of the Extended Tofts model.
+
+    The function maintain a parallel processing using the multiprocessing library;
+    the number of processes is equal to the number of CPUs in the machine.
+
+    The function returns the fitted parameters for each voxel in the 3D data array.
+
+
+
+
+    Args:
+        ca: is the arterial input function [OSIPI CAPLEX Q.IC1.001]
+        c_tiss: is the tissue concentration [OSIPI CAPLEX Q.IC1.001] as 4d array (x, y, z, t)
+        t: is the time as 1D array
+
+    Returns:
+        K1: is the rate constant of the forward model (Ktrans) [OSIPI CAPLEX Q.PH1.008]
+        ve: is the extravascular extracellular volume fraction [OSIPI CAPLEX Q.PH1.001]
+        vp: is the plasma volume fraction [OSIPI CAPLEX Q.PH1.001]
+
+    See Also:
+        `Modified Tofts Model`
+        `Tofts Model`
+
+    References:
+        - Lexicon url:
+            https://osipi.github.io/OSIPI_CAPLEX/perfusionModels/#ETM
+        - Lexicon code: M.PH1.002
+        - OSIPI name: Extended Tofts
+
+    """
     ktrans = np.zeros(c_tiss.shape[:-1])
     ve = np.zeros(c_tiss.shape[:-1])
     vp = np.zeros(c_tiss.shape[:-1])
@@ -175,10 +244,28 @@ def tofts_model(ca, c_tiss, t):
     return ktrans, ve
 
 
-def ForwardsModTofts(K1, k2, Vp, Cp, dt):
-    # To be carried out as matmul C=BA
-    # Where C is the output Ctiss and B the parameters
-    # With A a matrix of cumulative integrals
+def ForwardsModTofts(K1: np.ndarray, k2: np.ndarray, Vp: np.ndarray, Cp: np.ndarray, dt: int):
+    """Calculate the tissue concentration using the Tofts model
+
+    Args:
+        K1: is the rate constant of the forward model (Ktrans) [OSIPI CAPLEX Q.PH1.008]
+        k2: is the rate constant of the reverse model [OSIPI CAPLEX Q.PH1.009]
+        Vp: is the plasma volume fraction [OSIPI CAPLEX Q.PH1.001]
+        Cp: is the arterial input function [OSIPI CAPLEX Q.IC1.001]
+        dt: is the time interval between samples
+
+    Returns:
+        Ctiss: is the tissue concentration [OSIPI CAPLEX Q.IC1.001] as 4d array (x, y, z, t)
+
+    See Also:
+        `Modified Tofts Model`
+        `Extended Tofts Model`
+
+    References:
+        - Lexicon url:
+            https://osipi.github.io/OSIPI_CAPLEX/perfusionModels/#TM
+        - OSIPI name: Tofts Model
+    """
 
     x, y, z = K1.shape
     t = Cp.shape[0]
@@ -203,10 +290,6 @@ def ForwardsModTofts(K1, k2, Vp, Cp, dt):
 
 
 def ForwardsModTofts_1vox(K1, k2, Vp, Cp, dt):
-    # To be carried out as matmul C=BA
-    # Where C is the output Ctiss and B the parameters
-    # With A a matrix of cumulative integrals
-
     t = Cp.shape[0]
 
     Ctiss = np.zeros(t)

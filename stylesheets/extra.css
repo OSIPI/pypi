@@ -1,0 +1,36 @@
+.md-header__button.md-logo img{
+height: 50px;
+
+}
+
+
+.model-table {
+    display: table;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.model-row {
+    display: table-row;
+}
+
+.model-name, .model-description {
+    display: table-cell;
+    padding: 10px;
+    vertical-align: top;
+}
+
+.model-name {
+    width: 20%;
+    font-weight: bold;
+}
+
+.model-description {
+    width: 80%;
+}
+
+hr {
+    margin: 0;
+    border: 0;
+    border-top: 1px solid #ccc;
+}

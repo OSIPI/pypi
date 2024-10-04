@@ -11,3 +11,12 @@ repos:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: check-yaml
+
+  - repo: local
+    hooks:
+      - id: custom-script-py
+        name: Check Coverage
+        entry: poetry run python check_coverage.py
+        language: system
+        pass_filenames: false
+        args: [--fix]

@@ -124,8 +124,13 @@ def test_tissue_extended_tofts():
     assert np.allclose(ct_conv, ca * 0.3, rtol=1e-4, atol=1e-3)
 
 
+def test_tissue_two_compartment_exchange_model():
+    pass
+
+
 if __name__ == "__main__":
     test_tissue_tofts()
     test_tissue_extended_tofts()
+    test_tissue_two_compartment_exchange_model()
 
     print("All tissue concentration model tests passed!!")

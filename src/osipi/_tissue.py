@@ -2,6 +2,7 @@ import warnings
 
 import numpy as np
 from scipy.interpolate import interp1d
+from scipy.signal import convolve
 
 from ._convolution import exp_conv
 
@@ -332,3 +333,84 @@ def extended_tofts(
                 ct = ct_func(t)
 
     return ct
+
+
+def two_compartment_exchange_model(
+    t: np.ndarray,
+    ca: np.ndarray,
+    Fp: float,
+    Ps: float,
+    Ve: float,
+    Vp: float,
+    Ta: float = 30.0,
+) -> np.ndarray:
+    """Two compartment exchange model
+
+    Tracer flows from the AIF to the blood plasma compartment; two-way leakage
+    between the plasma and extracellular compartments(EES) is permitted.
+
+    Args:
+        t: 1D array of times(s).
+        ca: Arterial concentrations in mM for each time point in t.
+        Fp: Blood plasma flow rate into a unit tissue volume in ml/min.
+        Ps: Permeability surface area product in ml/min.
+        Ve: Extracellular volume fraction.
+        Vp: Plasma volume fraction.
+        Ta: Arterial delay time, i.e., difference in onset time between tissue curve and AIF in units of sec.
+
+    Returns:
+        Ct: Tissue concentrations in mM
+
+    References:
+        - Lexicon url: https://osipi.github.io/OSIPI_CAPLEX/perfusionModels/#indicator-kinetic-models
+        - Lexicon code: M.IC1.009
+        - OSIPI name: Two Compartment Exchange Model
+        - Adapted from contributions by: MJT_UoEdinburgh_UK
+
+    """
+    if not np.allclose(np.diff(t), np.diff(t)[0]):
+        warnings.warn(
+            ("Non-uniform time spacing detected. Time array may be" " resampled."),
+            stacklevel=2,
+        )
+
+    # Convert units
+    fp_per_s = Fp / (60.0 * 100.0)
+    ps_per_s = Ps / 60.0
+
+    # Calculate the impulse response function
+    v = Ve + Vp
+
+    # Mean transit time
+    T = v / fp_per_s
+    tc = Vp / fp_per_s
+    te = Ve / ps_per_s
+
+    sig_p = ((T + te) + np.sqrt((T + te) ** 2 - 4 * tc * te)) / (2 * tc * te)
+    sig_n = ((T + tc) - np.sqrt((T + tc) ** 2 - 4 * tc * te)) / (2 * tc * te)
+
+    # Calculate the impulse response function for the plasma compartment and EES
+
+    irf_cp = (
+        Vp
+        * sig_p
+        * sig_n
+        * ((1 - te * sig_n) * np.exp(-t * sig_n) + (te * sig_p - 1.0) * np.exp(-t * sig_p))
+        / (sig_p - sig_n)
+    )
+
+    irf_ce = Ve * sig_p * sig_n * (np.exp(-t * sig_n) - np.exp(-t * sig_p)) / (sig_p - sig_n)
+
+    irf_cp[[0]] /= 2
+    irf_ce[[0]] /= 2
+
+    dt = np.min(np.diff(t))
+
+    # get concentration in plasma and EES
+
+    Cp = dt * convolve(ca, irf_cp, mode="full", method="auto")[: len(t)]
+    Ce = dt * convolve(ca, irf_ce, mode="full", method="auto")[: len(t)]
+
+    # get tissue concentration
+    Ct = Cp + Ce
+    return Ct

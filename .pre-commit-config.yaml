@@ -1,9 +1,9 @@
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.4.8  # Use the latest version
+    rev: v0.4.8 # Use the latest version
     hooks:
       - id: ruff
-        args: [--fix]  # Optional: to enable lint fixes
+        args: [--fix] # Optional: to enable lint fixes
       - id: ruff-format
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0

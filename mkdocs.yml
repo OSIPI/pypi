@@ -75,6 +75,7 @@ nav:
               - references/models/tissue_models/index.md
               - osipi.tofts: references/models/tissue_models/tofts.md
               - osipi.extended_tofts: references/models/tissue_models/extended_tofts.md
+              - osipi.two_compartment_exchange: references/models/tissue_models/2cxm.md
 
   - Examples: generated/gallery
 

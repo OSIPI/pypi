@@ -53,12 +53,9 @@ class SVDDeconvolutionParams:
     oscillation_index : float
         Target oscillation index for oSVD. Default 0.035.
 
-        Optimal values are acquisition-dependent -- Wu et al. (2003) calibrate
-        them per SNR/TR (at TR=1.5s they report 0.085 at SNR=100 and 0.095 at
-        SNR=20, with P_SVD of 3-10%). A strict target on a short acquisition
-        forces heavy truncation, flattening the residue peak and
-        underestimating CBF; loosening it toward those values helps there.
-        The defaults here suit the high-CNR reference data used in testing.
+        Acquisition-dependent: Wu et al. (2003) calibrate per SNR/TR, reporting
+        0.085-0.095 with P_SVD of 3-10% at TR=1.5s. A strict target on a short
+        acquisition forces heavy truncation and underestimates CBF.
     block_circulant : bool
         Use block-circulant matrix (for cSVD/oSVD). Default True for
         cSVD/oSVD methods.
@@ -176,11 +173,10 @@ def deconvolve_oSVD(
     padded_conc[:, :n_pts] = masked_conc
     UtC = U.T @ padded_conc.T  # (2n, n_masked)
 
-    # Search ascending and take the FIRST threshold meeting the target (Wu et
-    # al. 2003: "P_SVD can be varied until ... OI falls below a user-specified
-    # value"). Span 0-95% is the paper's sSVD/cSVD calibration range; it does
-    # not state oSVD's internal range, but a 0.5 ceiling leaves the target
-    # unreachable on short acquisitions, collapsing oSVD onto cSVD.
+    # Take the FIRST threshold meeting the target (Wu et al. 2003: "P_SVD can
+    # be varied until ... OI falls below a user-specified value"). Span 0-95%
+    # follows the paper's sSVD/cSVD calibration range; a 0.5 ceiling leaves the
+    # target unreachable on short acquisitions, collapsing oSVD onto cSVD.
     thresholds = xp.linspace(0.01, 0.95, 40)
     s_max = S[0]
     target_oi = params.oscillation_index
